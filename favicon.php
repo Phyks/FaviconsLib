@@ -73,7 +73,7 @@ function getFavicon($urls) {
                     else {
                         $sizes = '';
                     }
-                    $favicons[$url] = array(
+                    $favicons[$url][] = array(
                         'favicon_url'=>(string) $head_tag->attributes()['href'],
                         'sizes'=>$sizes
                     );
@@ -122,7 +122,7 @@ function getFavicon($urls) {
     foreach($second_try as $tested_url) {
         $status_code = (int) $second_try_curl['status_codes'][$tested_url['url']];
         if ($status_code >= 200 && $status_code < 400) {
-            $favicons[$tested_url['input_url']] = array(
+            $favicons[$tested_url['input_url']][] = array(
                 'favicon_url'=>$tested_url['url'],
                 'sizes'=>''
             );
