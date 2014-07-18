@@ -47,8 +47,14 @@ function getFavicon($urls) {
 
         $html = new DOMDocument();
         $html->strictErrorChecking = false;
-        @$html->loadHTML($content);
+        $success = @$html->loadHTML($content);
+        if($success === false) {
+            continue;
+        }
         $xml = simplexml_import_dom($html);
+        if($xml === false) {
+            continue;
+        }
 
         // Try to fetch the favicon URL from the <head> tag
         foreach($xml->head->children() as $head_tag) {
