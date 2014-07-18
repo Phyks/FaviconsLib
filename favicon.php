@@ -32,7 +32,12 @@ function getFavicon($urls) {
     // Convert array to the good format for curl downloader
     $curl_urls = array();
     foreach($urls as $url) {
-        $curl_urls[] = array('url'=>$url);
+        if (endswith($url, '.html')) {  // Only check html files using first method
+            $curl_urls[] = array('url'=>$url);
+        }
+        else {
+            $errors[] = $url;
+        }
     }
 
     $contents = curl_downloader($curl_urls);
@@ -97,7 +102,7 @@ function getFavicon($urls) {
         $parsed_url = parse_url(trim($url));
         $second_try_url = "";
         if(isset($parsed_url['scheme'])) {
-            $second_try_url .= $parsed_url['scheme'];
+            $second_try_url .= $parsed_url['scheme'].'://';
         }
         if(isset($parsed_url['host'])) {
             $second_try_url .= $parsed_url['host'];
@@ -203,6 +208,19 @@ function curl_downloader($urls, $fetch_content=true) {
     }
 
     return array('results'=>$results, 'status_codes'=>$status_codes);
+}
+
+
+/**
+ * Check that $haystack ends with $needle.
+ */
+function endswith($haystack, $needle) {
+    $length = strlen($needle);
+    if ($length == 0) {
+        return true;
+    }
+
+    return (substr($haystack, -$length) === $needle);
 }
 
 
