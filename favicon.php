@@ -88,9 +88,26 @@ function getFavicon($urls) {
     // Check for errorred feeds wether the favicon.ico file at the root exists
     $second_try = array();
     foreach ($errors as $url) {
+        $parsed_url = parse_url(trim($url));
+        $second_try_url = "";
+        if(isset($parsed_url['scheme'])) {
+            $second_try_url .= $parsed_url['scheme'];
+        }
+        if(isset($parsed_url['host'])) {
+            $second_try_url .= $parsed_url['host'];
+        }
+        if(isset($parsed_url['port'])) {
+            $second_try_url .= $parsed_url['port'];
+        }
+        if(isset($parsed_url['user'])) {
+            $second_try_url .= $parsed_url['user'];
+        }
+        if(isset($parsed_url['pass'])) {
+            $second_try_url .= $parsed_url['pass'];
+        }
         $second_try[] = array(
             'input_url'=>$url,
-            'url'=>rtrim(trim($url), '/?') . '/favicon.ico'
+            'url'=>$second_try_url . '/favicon.ico'
         );
     }
     $second_try_curl = curl_downloader($second_try, false);
