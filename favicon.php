@@ -48,7 +48,7 @@ function getFavicon($urls) {
     }
 
     foreach($contents['results'] as $url=>$content) {
-        $content = substr($content, 0, strpos($content, '</head>')).'</html>'; // We don't need the full page, just the <head>
+        $content = substr($content, 0, strpos($content, '</head>')).'</head></html>'; // We don't need the full page, just the <head>
 
         $html = new DOMDocument();
         $html->strictErrorChecking = false;
